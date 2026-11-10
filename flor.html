@@ -1,0 +1,597 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> ❤️</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Georgia, serif;
+    background: linear-gradient(135deg, #f8eee8, #f4dfe0, #eee5dc);
+    overflow-x: hidden;
+    padding: 20px 0;
+}
+
+.card {
+    width: min(95%, 650px);
+    min-height: 90vh;
+    padding: 30px 15px;
+    text-align: center;
+    background: rgba(255,255,255,.65);
+    border: 1px solid rgba(255,255,255,.8);
+    border-radius: 28px;
+    box-shadow: 0 15px 45px #94716d25;
+    position: relative;
+    overflow: hidden;
+}
+
+h1 {
+    color: #79565b;
+    font-size: 32px;
+    margin: 5px 0 10px;
+}
+
+.intro {
+    color: #98787a;
+    font-size: 17px;
+    margin: 15px 0;
+}
+
+/* FOTOGRAFÍA */
+.foto-principal {
+    width: 190px;
+    height: 190px;
+    margin: 15px auto;
+    padding: 6px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 5px 20px #b77f8940;
+    overflow: hidden;
+}
+
+.foto-principal img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
+
+/* ESCENA */
+.scene {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* BOTÓN */
+button {
+    border: none;
+    border-radius: 30px;
+    padding: 17px 35px;
+    color: white;
+    background: #b77f89;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 6px 18px #b77f8940;
+    transition: .3s;
+    font-family: inherit;
+    margin: 15px auto 20px;
+}
+
+button:hover {
+    background: #986570;
+    transform: scale(1.05);
+}
+
+.scene.show button {
+    display: none;
+}
+
+/* RAMO: NO OCUPA ESPACIO ANTES DE ABRIRSE */
+.garden {
+    width: 100%;
+    max-width: 530px;
+    height: 0;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transition: height 1s ease, opacity 1s ease;
+}
+
+.scene.show .garden {
+    height: 490px;
+    opacity: 1;
+    margin-top: 10px;
+}
+
+svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    overflow: visible;
+}
+
+/* TALLOS */
+.stem {
+    fill: none;
+    stroke: #71866b;
+    stroke-width: 7;
+    stroke-linecap: round;
+    stroke-dasharray: 450;
+    stroke-dashoffset: 450;
+}
+
+/* HOJAS */
+.leaf {
+    fill: #819579;
+    stroke: #647b60;
+    stroke-width: 1.5;
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: scale(0);
+}
+
+/* ENVOLTORIO */
+.wrapper {
+    opacity: 0;
+    transform: translateY(40px) scale(.8);
+    transform-origin: center;
+}
+
+/* MOÑO */
+.ribbon {
+    opacity: 0;
+}
+
+/* FLORES */
+.flower {
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: scale(0);
+    opacity: 0;
+}
+
+.petal {
+    fill: #d99ca8;
+    stroke: #c98694;
+    stroke-width: 1;
+}
+
+.petal.light {
+    fill: #e8b9bd;
+    stroke: #d99da8;
+}
+
+.petal.cream {
+    fill: #ead9b9;
+    stroke: #d9c59e;
+}
+
+.flower-center {
+    fill: #8c6b57;
+    stroke: #725443;
+    stroke-width: 2;
+}
+
+.center-dot {
+    fill: #d9bd8f;
+}
+
+/* GATITOS */
+.kittens {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+/* MENSAJE FINAL */
+.message {
+    display: none;
+    color: #79565b;
+    max-width: 500px;
+    margin: 15px auto 25px;
+}
+
+.scene.show .message {
+    display: block;
+    animation: messageIn 1.5s 3.8s both;
+}
+
+.message h2 {
+    font-size: 29px;
+    margin-bottom: 8px;
+}
+
+.message p {
+    font-size: 17px;
+    line-height: 1.6;
+    margin: 8px 15px;
+}
+
+/* ANIMACIONES */
+.scene.show .wrapper {
+    animation: wrapperIn 1.5s forwards;
+}
+
+.scene.show .stem {
+    animation: growStem 2s ease forwards;
+}
+
+.scene.show .leaf {
+    animation: leafIn 1s ease forwards;
+}
+
+.scene.show .flower {
+    animation: bloom 1.2s ease-out forwards;
+}
+
+.scene.show .ribbon {
+    animation: ribbonIn 1s 2s forwards;
+}
+
+.scene.show .kittens {
+    animation: kittensIn 1.5s 3.2s forwards;
+}
+
+@keyframes wrapperIn {
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes growStem {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes leafIn {
+    to {
+        transform: scale(1);
+    }
+}
+
+@keyframes bloom {
+    0% {
+        transform: scale(0) rotate(-25deg);
+        opacity: 0;
+    }
+    70% {
+        transform: scale(1.12) rotate(5deg);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1) rotate(0);
+        opacity: 1;
+    }
+}
+
+@keyframes ribbonIn {
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes kittensIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes messageIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* CORAZONES FLOTANTES */
+.hearts span {
+    position: fixed;
+    bottom: -30px;
+    color: #c98d99;
+    font-size: 22px;
+    animation: float 7s linear infinite;
+    opacity: 0;
+    pointer-events: none;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0) rotate(0);
+        opacity: 0;
+    }
+    15% {
+        opacity: .7;
+    }
+    100% {
+        transform: translateY(-110vh) rotate(35deg);
+        opacity: 0;
+    }
+}
+
+/* CELULARES */
+@media(max-width: 500px) {
+    .card {
+        padding: 25px 10px;
+    }
+
+    h1 {
+        font-size: 26px;
+    }
+
+    .foto-principal {
+        width: 160px;
+        height: 160px;
+    }
+
+    .garden {
+        max-width: 100%;
+    }
+
+    .scene.show .garden {
+        height: 390px;
+    }
+
+    .message h2 {
+        font-size: 25px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- CORAZONES -->
+<div class="hearts">
+    <span style="left:8%;animation-delay:0s">♡</span>
+    <span style="left:25%;animation-delay:2s">♥</span>
+    <span style="left:48%;animation-delay:1s">♡</span>
+    <span style="left:70%;animation-delay:3s">♥</span>
+    <span style="left:90%;animation-delay:4s">♡</span>
+</div>
+
+<div class="card">
+
+    <h1>❤️</h1>
+
+    <!-- FOTO -->
+    <div class="foto-principal">
+        <img src="nuestra-foto.jpg" alt="Un recuerdo especial">
+    </div>
+
+    <p class="intro">
+        Para Eve bonita.
+    </p>
+
+    <div class="scene" id="scene">
+
+        <!-- BOTÓN ANTES DEL RAMO -->
+        <button onclick="abrirRamo()">
+            ABRE TU SORPRESA 🌸
+        </button>
+
+        <!-- RAMO -->
+        <div class="garden">
+
+        <svg viewBox="0 0 500 490" xmlns="http://www.w3.org/2000/svg">
+
+        <!-- ENVOLTORIO -->
+        <g class="wrapper">
+            <path d="M105 280 Q250 340 395 280 L325 455 Q250 480 175 455 Z"
+                  fill="#e8d7c9" stroke="#cdb9a9" stroke-width="3"/>
+            <path d="M125 300 Q250 350 375 300 L315 430 Q250 452 185 430 Z"
+                  fill="#f2e7dc"/>
+            <path d="M105 280 L250 350 L395 280"
+                  fill="none" stroke="#c6a99a" stroke-width="3"/>
+            <path d="M145 305 L250 365 L355 305"
+                  fill="none" stroke="#d9c3b4" stroke-width="2"/>
+        </g>
+
+        <!-- TALLOS -->
+        <g>
+            <path class="stem" d="M250 365 Q225 270 150 120"/>
+            <path class="stem" d="M250 365 Q245 250 250 85"/>
+            <path class="stem" d="M250 365 Q285 250 350 125"/>
+            <path class="stem" d="M250 365 Q205 260 205 175"/>
+            <path class="stem" d="M250 365 Q300 270 300 175"/>
+        </g>
+
+        <!-- HOJAS -->
+        <g>
+            <path class="leaf" d="M225 300 Q145 245 160 200 Q220 225 225 300"/>
+            <path class="leaf" d="M280 310 Q360 250 345 210 Q290 240 280 310"/>
+            <path class="leaf" d="M230 345 Q165 310 165 275 Q220 290 230 345"/>
+            <path class="leaf" d="M275 350 Q340 310 350 280 Q295 290 275 350"/>
+            <path class="leaf" d="M245 270 Q195 225 195 195 Q245 220 245 270"/>
+            <path class="leaf" d="M265 270 Q310 225 310 195 Q265 220 265 270"/>
+        </g>
+
+        <!-- GERBERA IZQUIERDA -->
+        <g class="flower" style="animation-delay:.2s">
+            <g transform="translate(150 120)">
+                <ellipse class="petal" cx="0" cy="-37" rx="10" ry="31"/>
+                <ellipse class="petal" cx="0" cy="-37" rx="10" ry="31" transform="rotate(30)"/>
+                <ellipse class="petal light" cx="0" cy="-37" rx="10" ry="31" transform="rotate(60)"/>
+                <ellipse class="petal" cx="0" cy="-37" rx="10" ry="31" transform="rotate(90)"/>
+                <ellipse class="petal light" cx="0" cy="-37" rx="10" ry="31" transform="rotate(120)"/>
+                <ellipse class="petal" cx="0" cy="-37" rx="10" ry="31" transform="rotate(150)"/>
+                <ellipse class="petal light" cx="0" cy="-37" rx="10" ry="31" transform="rotate(180)"/>
+                <ellipse class="petal" cx="0" cy="-37" rx="10" ry="31" transform="rotate(210)"/>
+                <ellipse class="petal light" cx="0" cy="-37" rx="10" ry="31" transform="rotate(240)"/>
+                <ellipse class="petal" cx="0" cy="-37" rx="10" ry="31" transform="rotate(270)"/>
+                <ellipse class="petal light" cx="0" cy="-37" rx="10" ry="31" transform="rotate(300)"/>
+                <ellipse class="petal" cx="0" cy="-37" rx="10" ry="31" transform="rotate(330)"/>
+                <circle class="flower-center" r="18"/>
+                <circle class="center-dot" r="12"/>
+                <circle class="center-dot" cx="-5" cy="-3" r="2"/>
+                <circle class="center-dot" cx="5" cy="3" r="2"/>
+            </g>
+        </g>
+
+        <!-- GERBERA CENTRAL -->
+        <g class="flower" style="animation-delay:.5s">
+            <g transform="translate(250 85)">
+                <ellipse class="petal light" cx="0" cy="-42" rx="11" ry="34"/>
+                <ellipse class="petal" cx="0" cy="-42" rx="11" ry="34" transform="rotate(30)"/>
+                <ellipse class="petal light" cx="0" cy="-42" rx="11" ry="34" transform="rotate(60)"/>
+                <ellipse class="petal" cx="0" cy="-42" rx="11" ry="34" transform="rotate(90)"/>
+                <ellipse class="petal light" cx="0" cy="-42" rx="11" ry="34" transform="rotate(120)"/>
+                <ellipse class="petal" cx="0" cy="-42" rx="11" ry="34" transform="rotate(150)"/>
+                <ellipse class="petal light" cx="0" cy="-42" rx="11" ry="34" transform="rotate(180)"/>
+                <ellipse class="petal" cx="0" cy="-42" rx="11" ry="34" transform="rotate(210)"/>
+                <ellipse class="petal light" cx="0" cy="-42" rx="11" ry="34" transform="rotate(240)"/>
+                <ellipse class="petal" cx="0" cy="-42" rx="11" ry="34" transform="rotate(270)"/>
+                <ellipse class="petal light" cx="0" cy="-42" rx="11" ry="34" transform="rotate(300)"/>
+                <ellipse class="petal" cx="0" cy="-42" rx="11" ry="34" transform="rotate(330)"/>
+                <circle class="flower-center" r="20"/>
+                <circle class="center-dot" r="14"/>
+                <circle class="center-dot" cx="-6" cy="-4" r="2.5"/>
+                <circle class="center-dot" cx="6" cy="3" r="2.5"/>
+            </g>
+        </g>
+
+        <!-- GERBERA DERECHA -->
+        <g class="flower" style="animation-delay:.8s">
+            <g transform="translate(350 125)">
+                <ellipse class="petal cream" cx="0" cy="-35" rx="10" ry="29"/>
+                <ellipse class="petal light" cx="0" cy="-35" rx="10" ry="29" transform="rotate(30)"/>
+                <ellipse class="petal cream" cx="0" cy="-35" rx="10" ry="29" transform="rotate(60)"/>
+                <ellipse class="petal light" cx="0" cy="-35" rx="10" ry="29" transform="rotate(90)"/>
+                <ellipse class="petal cream" cx="0" cy="-35" rx="10" ry="29" transform="rotate(120)"/>
+                <ellipse class="petal light" cx="0" cy="-35" rx="10" ry="29" transform="rotate(150)"/>
+                <ellipse class="petal cream" cx="0" cy="-35" rx="10" ry="29" transform="rotate(180)"/>
+                <ellipse class="petal light" cx="0" cy="-35" rx="10" ry="29" transform="rotate(210)"/>
+                <ellipse class="petal cream" cx="0" cy="-35" rx="10" ry="29" transform="rotate(240)"/>
+                <ellipse class="petal light" cx="0" cy="-35" rx="10" ry="29" transform="rotate(270)"/>
+                <ellipse class="petal cream" cx="0" cy="-35" rx="10" ry="29" transform="rotate(300)"/>
+                <ellipse class="petal light" cx="0" cy="-35" rx="10" ry="29" transform="rotate(330)"/>
+                <circle class="flower-center" r="17"/>
+                <circle class="center-dot" r="11"/>
+            </g>
+        </g>
+
+        <!-- GERBERA DELANTERA IZQUIERDA -->
+        <g class="flower" style="animation-delay:1.1s">
+            <g transform="translate(205 175) scale(.72)">
+                <ellipse class="petal light" cx="0" cy="-32" rx="10" ry="27"/>
+                <ellipse class="petal" cx="0" cy="-32" rx="10" ry="27" transform="rotate(30)"/>
+                <ellipse class="petal light" cx="0" cy="-32" rx="10" ry="27" transform="rotate(60)"/>
+                <ellipse class="petal" cx="0" cy="-32" rx="10" ry="27" transform="rotate(90)"/>
+                <ellipse class="petal light" cx="0" cy="-32" rx="10" ry="27" transform="rotate(120)"/>
+                <ellipse class="petal" cx="0" cy="-32" rx="10" ry="27" transform="rotate(150)"/>
+                <ellipse class="petal light" cx="0" cy="-32" rx="10" ry="27" transform="rotate(180)"/>
+                <ellipse class="petal" cx="0" cy="-32" rx="10" ry="27" transform="rotate(210)"/>
+                <ellipse class="petal light" cx="0" cy="-32" rx="10" ry="27" transform="rotate(240)"/>
+                <ellipse class="petal" cx="0" cy="-32" rx="10" ry="27" transform="rotate(270)"/>
+                <ellipse class="petal light" cx="0" cy="-32" rx="10" ry="27" transform="rotate(300)"/>
+                <ellipse class="petal" cx="0" cy="-32" rx="10" ry="27" transform="rotate(330)"/>
+                <circle class="flower-center" r="17"/>
+                <circle class="center-dot" r="11"/>
+            </g>
+        </g>
+
+        <!-- GERBERA DELANTERA DERECHA -->
+        <g class="flower" style="animation-delay:1.4s">
+            <g transform="translate(300 175) scale(.72)">
+                <ellipse class="petal cream" cx="0" cy="-32" rx="10" ry="27"/>
+                <ellipse class="petal light" cx="0" cy="-32" rx="10" ry="27" transform="rotate(30)"/>
+                <ellipse class="petal cream" cx="0" cy="-32" rx="10" ry="27" transform="rotate(60)"/>
+                <ellipse class="petal light" cx="0" cy="-32" rx="10" ry="27" transform="rotate(90)"/>
+                <ellipse class="petal cream" cx="0" cy="-32" rx="10" ry="27" transform="rotate(120)"/>
+                <ellipse class="petal light" cx="0" cy="-32" rx="10" ry="27" transform="rotate(150)"/>
+                <ellipse class="petal cream" cx="0" cy="-32" rx="10" ry="27" transform="rotate(180)"/>
+                <ellipse class="petal light" cx="0" cy="-32" rx="10" ry="27" transform="rotate(210)"/>
+                <ellipse class="petal cream" cx="0" cy="-32" rx="10" ry="27" transform="rotate(240)"/>
+                <ellipse class="petal light" cx="0" cy="-32" rx="10" ry="27" transform="rotate(270)"/>
+                <ellipse class="petal cream" cx="0" cy="-32" rx="10" ry="27" transform="rotate(300)"/>
+                <ellipse class="petal light" cx="0" cy="-32" rx="10" ry="27" transform="rotate(330)"/>
+                <circle class="flower-center" r="17"/>
+                <circle class="center-dot" r="11"/>
+            </g>
+        </g>
+
+        <!-- MOÑO -->
+        <g class="ribbon">
+            <path d="M245 365 Q195 330 190 370 Q205 400 245 375"
+                  fill="#b77f89" stroke="#986570" stroke-width="2"/>
+            <path d="M255 365 Q305 330 310 370 Q295 400 255 375"
+                  fill="#b77f89" stroke="#986570" stroke-width="2"/>
+            <circle cx="250" cy="370" r="12" fill="#986570"/>
+            <path d="M245 380 L230 415 L250 400 L265 415 L255 380"
+                  fill="#c18c94"/>
+        </g>
+
+        <!-- GATITO IZQUIERDO -->
+        <g class="kittens" transform="translate(65 370)">
+            <ellipse cx="35" cy="45" rx="31" ry="25" fill="#aaa39e"/>
+            <circle cx="35" cy="17" r="25" fill="#aaa39e"/>
+            <path d="M15 2 L11 -22 L31 -7 Z" fill="#aaa39e"/>
+            <path d="M55 2 L60 -22 L40 -7 Z" fill="#aaa39e"/>
+            <path d="M17 -7 L16 -15 L26 -7 Z" fill="#d9a9aa"/>
+            <path d="M49 -7 L55 -15 L45 -7 Z" fill="#d9a9aa"/>
+            <ellipse cx="26" cy="17" rx="3" ry="5" fill="#514b47"/>
+            <ellipse cx="44" cy="17" rx="3" ry="5" fill="#514b47"/>
+            <path d="M32 25 Q35 29 38 25" fill="none" stroke="#735e5a" stroke-width="2"/>
+            <path d="M10 25 L-5 22 M10 30 L-5 32 M60 25 L75 22 M60 30 L75 32"
+                  stroke="#766b66" stroke-width="1.5"/>
+        </g>
+
+        <!-- GATITO DERECHO -->
+        <g class="kittens" transform="translate(350 370)">
+            <ellipse cx="35" cy="45" rx="31" ry="25" fill="#e7d8c7"/>
+            <circle cx="35" cy="17" r="25" fill="#e7d8c7"/>
+            <path d="M15 2 L11 -22 L31 -7 Z" fill="#e7d8c7"/>
+            <path d="M55 2 L60 -22 L40 -7 Z" fill="#e7d8c7"/>
+            <path d="M17 -7 L16 -15 L26 -7 Z" fill="#d9a9aa"/>
+            <path d="M49 -7 L55 -15 L45 -7 Z" fill="#d9a9aa"/>
+            <ellipse cx="26" cy="17" rx="3" ry="5" fill="#514b47"/>
+            <ellipse cx="44" cy="17" rx="3" ry="5" fill="#514b47"/>
+            <path d="M32 25 Q35 29 38 25" fill="none" stroke="#735e5a" stroke-width="2"/>
+            <path d="M10 25 L-5 22 M10 30 L-5 32 M60 25 L75 22 M60 30 L75 32"
+                  stroke="#b5a18f" stroke-width="1.5"/>
+        </g>
+
+        </svg>
+        </div>
+
+        <!-- MENSAJE FINAL -->
+        <div class="message">
+            <h2>¡Te amo con toda el alma! ❤️</h2>
+
+         
+        </div>
+
+    </div>
+</div>
+
+<script>
+function abrirRamo() {
+    const escena = document.getElementById("scene");
+
+    if (!escena.classList.contains("show")) {
+        escena.classList.add("show");
+    }
+}
+</script>
+
+</body>
+</html>
